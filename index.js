@@ -57,11 +57,34 @@ app.get("/products/:id", async (req, res) => {
   res.send(result);
 });
 
-// app.post("/books", verifyToken, async (req, res) => {
-//   const newBook = req.body;
-//   const result = await booksCollection.insertOne(newBook);
-//   res.send(result);
-// });
+app.put("/products/:id", async (req, res) => {
+  console.log(req.body);
+  const id = req.params.id;
+  const updatedProduct = req.body;
+  console.log(id, updatedProduct);
+  const filter = { _id: new ObjectId(id) };
+
+  const options = { upsert: true };
+
+  const ProductDoc = {
+    $set: {
+      image: updatedProduct.image,
+      brand: updatedProduct.brand,
+      rating: updatedProduct.rating,
+      name: updatedProduct.name,
+      details: updatedProduct.details,
+      type: updatedProduct.type,
+      price: updatedProduct.price,
+    },
+  };
+  console.log(ProductDoc);
+  const result = await productsCollection.updateOne(
+    filter,
+    ProductDoc,
+    options
+  );
+  res.send(result);
+});
 
 app.post("/carts", async (req, res) => {
   const cartItem = req.body;
