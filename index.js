@@ -86,6 +86,12 @@ app.put("/products/:id", async (req, res) => {
   res.send(result);
 });
 
+app.post("/products", async (req, res) => {
+  const newProduct = req.body;
+  const result = await productsCollection.insertOne(newProduct);
+  res.send(result);
+});
+
 app.post("/carts", async (req, res) => {
   const cartItem = req.body;
   const result = await cartCollection.insertOne(cartItem);
